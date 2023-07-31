@@ -56,7 +56,7 @@ const Form = ({data}) => {
                   </div>
 
                   <div className="w-full border-b-2 border-black border-dotted">
-                    <p className="inputFont">Ramu Cantonment</p>
+                    <p className="inputFont">{garision}</p>
                   </div>
 
                   <div className="mt-10 relative">
@@ -83,7 +83,7 @@ const Form = ({data}) => {
                     </p>
                   </div>
                   <div className="relative w-full border-t-2 border-black border-dotted">
-                    <p className="pl-5 inputFont">115 Fd Wksp Coy EME</p>
+                    <p className="pl-5 inputFont">149 Fd Wksp Coy EME</p>
                     <p className="absolute -top-[15px] -left-10 text-[13px]">
                       ইউনিট
                     </p>
@@ -95,7 +95,7 @@ const Form = ({data}) => {
                     </p>
                   </div>
                   <div className="relative w-full border-t-2 border-black border-dotted">
-                    <p className="pl-5 inputFont">{workOrderNo}</p>
+                    <p className="pl-5 inputFont"><span>2023-24/{workOrderNo}</span></p>
                     <p className="absolute -top-[15px] -left-10 text-[13px]">
                       সংখ্যা
                     </p>
@@ -136,13 +136,13 @@ const Form = ({data}) => {
                   </td>
                   <td className="inputFont text-center">{qty}</td>
                   <td className="inputFont text-left">
-                    BER Class six. {reason}. (Lawful)
+                    BER Class six. {reason} (Lawful)
                   </td>
                 </tr>
               </table>
               <div className="pl-[88px] mt-[170px]">
                 <div className="relative w-[150px] border-t-2 border-black border-dotted">
-                  <p className="pl-5 inputFont">{jobCardNo}</p>
+                  <p className="pl-5 inputFont"><span>2023-24/{jobCardNo}</span></p>
                   <p className="absolute -top-[15px] -left-[75px] text-[13px]">
                     কার্য নম্বর
                   </p>

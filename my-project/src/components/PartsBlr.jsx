@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import FormikControl from "../control/FormikControl";
 import BlrForm from "./BlrForm";
+import { unitName, garisionName } from "./database/Db_unit";
+import { type, getModelsByType } from "./database/Db_vehData";
+import { partsName, getReasonByParts } from "./database/db_Parts";
 
 const PartsBlr = () => {
   const [open, setOpen] = useState(false)
+  const [parts, setParts] = useState(null)
+  
+  const reason=getReasonByParts(parts)
+  console.log(reason)
   const initialState = {
     unit: "",
     garision: "",
@@ -17,9 +24,11 @@ const PartsBlr = () => {
     partsName: "",
     qty: "",
     wkDt: "",
-    reason: "",
+    reason:"",
   };
   const [data, setData] = useState(null);
+  const [vehType, setVehType] = useState(null)
+  
   const onSubmit = (values) => {
     setData(values);
   };
@@ -29,6 +38,18 @@ const PartsBlr = () => {
   const handleToogle = () =>{
     setOpen(!open)
   }
+
+  const handleChange = (e) => {
+    setVehType(e.target.value)
+  }
+
+  const handleReason = (e) =>{
+    const selectedParts = e.target.value;
+    setParts(selectedParts);
+  }
+  
+  
+  
   return (
     <div>
       <h1 className="mt-8 text-center">Spare Parts BLR Form</h1>
@@ -38,16 +59,14 @@ const PartsBlr = () => {
             {/* First column */}
             <div className="w-[350px] flex flex-col space-y-5">
               <FormikControl
-                control="input"
-                type="text"
-                label="Unit Name"
+                control="select"
                 name="unit"
+                options={unitName}
               />
               <FormikControl
-                control="input"
-                type="text"
-                label="Garison Name"
+                control="select"
                 name="garision"
+                options={garisionName}
               />
               <FormikControl
                 control="input"
@@ -71,16 +90,15 @@ const PartsBlr = () => {
                 name="baNo"
               />
               <FormikControl
-                control="input"
-                type="text"
-                label="Type of Veh"
+                control="select"
                 name="typeOfVeh"
+                onChange={handleChange}
+                options ={type}
               />
               <FormikControl
-                control="input"
-                type="text"
-                label="Veh Model"
+                control="select"
                 name="model"
+                options={getModelsByType(vehType)}
               />
               <FormikControl
                 control="input"
@@ -92,10 +110,11 @@ const PartsBlr = () => {
             {/* Third Column */}
             <div className="w-[350px] flex flex-col space-y-5">
               <FormikControl
-                control="input"
-                type="text"
-                label="Parts Name"
+                control="select"
                 name="partsName"
+                options={partsName}
+                onChange={handleReason}
+                                
               />
               <FormikControl
                 control="input"
@@ -110,10 +129,11 @@ const PartsBlr = () => {
                 name="wkDt"
               />
               <FormikControl
-                control="input"
-                type="text"
+                control="select"
                 label="Reason of BLR"
                 name="reason"
+                options={getReasonByParts(parts)}
+                
               />
             </div>
           </div>
@@ -136,7 +156,7 @@ const PartsBlr = () => {
     active:translate-y-[-1px]
   "
             >
-              Elevating
+              Submit
               <span
                 className="
       absolute
@@ -167,3 +187,4 @@ const PartsBlr = () => {
 };
 
 export default PartsBlr;
+
