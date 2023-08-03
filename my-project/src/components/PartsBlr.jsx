@@ -7,53 +7,61 @@ import { type, getModelsByType } from "./database/Db_vehData";
 import { partsName, getReasonByParts } from "./database/db_Parts";
 
 const PartsBlr = () => {
-  const [open, setOpen] = useState(false)
-  const [parts, setParts] = useState(null)
-  
-  const reason=getReasonByParts(parts)
-  console.log(reason)
-  const initialState = {
-    unit: "",
-    garision: "",
-    workOrderNo: "",
-    jobCardNo: "",
-    baNo: "",
-    typeOfVeh: "",
-    model: "",
-    action: "",
-    partsName: "",
-    qty: "",
-    wkDt: "",
-    reason:"",
-  };
+  const [open, setOpen] = useState(false);
+  const [parts, setParts] = useState(null);
   const [data, setData] = useState(null);
-  const [vehType, setVehType] = useState(null)
-  
+  const [customReason, setCustomReason] = useState(""); // Initialize customReason state
+  const [vehType, setVehType] = useState(null);
+
   const onSubmit = (values) => {
-    setData(values);
+    console.log("values", values);
+    // Use customReason as the value for "reason" field on form submission
+    setData({ ...values, reason: customReason });
   };
-  useEffect(() => {
-    console.log("Data state changed:", data);
-  }, [data]);
-  const handleToogle = () =>{
-    setOpen(!open)
-  }
+
+  const handleToogle = () => {
+    setOpen(!open);
+  };
 
   const handleChange = (e) => {
-    setVehType(e.target.value)
-  }
+    setParts(null); // Reset selected parts when the vehicle type changes
+  };
 
-  const handleReason = (e) =>{
+  const handleReason = (e) => {
     const selectedParts = e.target.value;
     setParts(selectedParts);
-  }
-  
+
+    // Update the customReason state when parts state changes
+    const updatedReason = getReasonByParts(selectedParts);
+    setCustomReason(updatedReason);
+  };
+
+  const handleType = (e) => {
+    setVehType(e.target.value);
+  };
+
   
   
   return (
     <div>
       <h1 className="mt-8 text-center">Spare Parts BLR Form</h1>
-      <Formik initialValues={initialState} onSubmit={onSubmit}>
+      <Formik 
+      initialValues={{
+        unit: "",
+        garision: "",
+        workOrderNo: "",
+        jobCardNo: "",
+        baNo: "",
+        typeOfVeh: "",
+        model: "",
+        action: "",
+        partsName: "",
+        qty: "",
+        wkDt: "",
+        reason: customReason, // Use customReason as the initial value
+      }}
+      onSubmit={onSubmit}
+      >
         <Form>
           <div className="grid grid-cols-3 items-center space-x-3 px-8 mt-12">
             {/* First column */}
@@ -92,14 +100,16 @@ const PartsBlr = () => {
               <FormikControl
                 control="select"
                 name="typeOfVeh"
-                onChange={handleChange}
+                onChange={handleType}
                 options ={type}
               />
-              <FormikControl
+
+<FormikControl
                 control="select"
                 name="model"
                 options={getModelsByType(vehType)}
               />
+
               <FormikControl
                 control="input"
                 type="text"
@@ -109,13 +119,12 @@ const PartsBlr = () => {
             </div>
             {/* Third Column */}
             <div className="w-[350px] flex flex-col space-y-5">
-              <FormikControl
-                control="select"
-                name="partsName"
-                options={partsName}
-                onChange={handleReason}
-                                
-              />
+            <FormikControl
+              control="select"
+              name="partsName"
+              options={partsName}
+              onChange={handleReason}
+            />
               <FormikControl
                 control="input"
                 type="text"
@@ -129,12 +138,13 @@ const PartsBlr = () => {
                 name="wkDt"
               />
               <FormikControl
-                control="select"
-                label="Reason of BLR"
-                name="reason"
-                options={getReasonByParts(parts)}
-                
-              />
+              control="input"
+              type="text"
+              label="Reason of BLR"
+              name="reason"
+              value={customReason}
+              onChange={(e) => setCustomReason(e.target.value)}
+            />
             </div>
           </div>
           <div className="flex w-full justify-center mt-10">
@@ -154,11 +164,10 @@ const PartsBlr = () => {
     relative
     group
     active:translate-y-[-1px]
-  "
-            >
-              Submit
-              <span
-                className="
+  ">
+   Submit
+    <span
+      className="
       absolute
       top-0
       left-0
@@ -180,7 +189,9 @@ const PartsBlr = () => {
         </Form>
       </Formik>
       <div className="">
-        {open && <BlrForm data={data || {}} handleToogle={handleToogle} className="hidden" />}
+      {open && data && parts && (
+        <BlrForm data={data} parts={parts} handleToogle={handleToogle} className="hidden" />
+      )}
       </div>
     </div>
   );

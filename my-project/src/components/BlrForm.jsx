@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from "react";
 import ReactToPrint from "react-to-print";
 import Form from "./Form";
 
-const BlrForm = ({ data, handleToogle }) => {
+const BlrForm = ({ data, handleToogle, parts }) => {
   const [open, setOpen] = useState(true)
   const handleOpen = useCallback(() => {
     setOpen(false);
@@ -18,8 +18,8 @@ const BlrForm = ({ data, handleToogle }) => {
             <h1 onClick={handleOpen} className="p-2 bg-rose-500 rounded-md text-center hover:bg-rose-700 text-white transition duration-300 cursor-pointer">Close BLR Form</h1>
             <div ref={printItem}>
             <div className="flex justify-center">
-            <Form data={data}  />
-            <Form data={data}  />
+            <Form data={data} parts={parts} />
+            <Form data={data} parts={parts} />
             </div>
       </div>
       <ReactToPrint

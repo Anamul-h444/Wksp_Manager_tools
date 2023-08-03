@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Form = ({data}) => {
+const Form = ({data, parts}) => {
     const {
         unit,
         garision,
@@ -132,7 +132,7 @@ const Form = ({data}) => {
                 <tr>
                   <td className="inputFont">{`${baNo} ${typeOfVeh} ${model}`}</td>
                   <td className="inputFont text-left">
-                    <p className="inputFont">{partsName}</p>
+                    <p className="inputFont">{parts}</p>
                   </td>
                   <td className="inputFont text-center">{qty}</td>
                   <td className="inputFont text-left">
